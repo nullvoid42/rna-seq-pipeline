@@ -1,0 +1,24 @@
+# RNA-seq Pipeline 配置
+# 数据集：airway (人类气道平滑肌细胞，DEX处理 vs 对照)
+
+project_name: "airway_rnaseq"
+organism: "homo_sapiens"
+genome: "GRCh38"
+
+# 数据参数
+dataset: "airway"
+condition_col: "dex"
+control_level: "untrt"
+treatment_level: "dex"
+
+# 差异表达参数
+padj_threshold: 0.05
+lfc_threshold: 1
+top_n_genes: 20
+
+# 路径配置
+data_dir: "data"
+results_dir: "results"
+
+# R 环境配置
+r_version: "4.3.0"
