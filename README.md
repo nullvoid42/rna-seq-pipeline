@@ -1,5 +1,10 @@
 # 🧬 RNA-seq 差异表达分析全流程
 
+[![CI](https://github.com/nullvoid42/rna-seq-pipeline/actions/workflows/test.yml/badge.svg)](https://github.com/nullvoid42/rna-seq-pipeline/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Stars](https://img.shields.io/github/stars/nullvoid42/rna-seq-pipeline?style=social)](https://github.com/nullvoid42/rna-seq-pipeline/stargazers)
+[![Last Commit](https://img.shields.io/github/last-commit/nullvoid42/rna-seq-pipeline/main)](https://github.com/nullvoid42/rna-seq-pipeline/commits/main)
+
 使用 DESeq2 对 airway 数据集（人类气道平滑肌细胞，8 样本）进行差异表达分析。
 
 **数据集**: GSE52778 | **分析工具**: DESeq2 | **可视化**: PCA + 火山图 + 热图

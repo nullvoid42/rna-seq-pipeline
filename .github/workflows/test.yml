@@ -1,0 +1,61 @@
+name: RNA-seq Pipeline CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install pandas numpy matplotlib scikit-learn scipy
+      
+      - name: Run data download
+        run: python3 scripts/download_data.py
+      
+      - name: Run DESeq2 analysis
+        run: python3 scripts/deseq2_analysis.py data results/tables
+      
+      - name: Run visualization
+        run: python3 scripts/visualize.py data results
+      
+      - name: Verify outputs
+        run: |
+          ls -la results/figures/
+          ls -la results/tables/
+          test -f results/figures/pca_plot.png
+          test -f results/figures/volcano_plot.png
+          test -f results/figures/heatmap_plot.png
+
+  test-r:
+    runs-on: ubuntu-latest
+    if: false  # R 环境较慢，暂不启用
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up R
+        uses: actions/setup-r@v4
+        with:
+          r-version: '4.3'
+      
+      - name: Install R packages
+        run: |
+          R -e "install.packages(c('tidyverse', 'ggrepel', 'pheatmap'), repos='https://cloud.r-project.org')"
+          R -e "if (!require('BiocManager')) install.packages('BiocManager'); BiocManager::install(c('DESeq2', 'airway', 'org.Hs.eg.db'))"
+      
+      - name: Run pipeline
+        run: |
+          Rscript scripts/download_data.R data
+          Rscript scripts/deseq2_analysis.R data/airway_counts.rds data/airway_coldata.rds results/tables
+          Rscript scripts/visualize.R data/dds_object.rds results/tables/deseq2_results.csv results/figures
